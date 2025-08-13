@@ -1,5 +1,5 @@
 ---
-title: "{{{EXTENSION}}}"
+title: "{toc-depth}"
 subtitle: "Quarto Extension"
 format:
   html:
