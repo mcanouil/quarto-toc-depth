@@ -1,57 +1,105 @@
 ---
-title: "{toc-depth}"
+title: "TOC Depth"
 subtitle: "Quarto Extension"
+description: |
+  This document demonstrates the TOC Depth extension functionality.
 format:
   html:
     output-file: index
-  typst:
-    output-file: example-typst
-    papersize: a4
-    margin:
-      x: 2.5cm
-      y: 2.5cm
-  pdf-xelatex:
-    output-file: example-xelatex
-    papersize: a4
-    margin:
-      x: 2.5cm
-      y: 2.5cm
-  pdf-lualatex:
-    output-file: example-lualatex
-    pdf-engine: lualatex
-    papersize: a4
-    margin:
-      x: 2.5cm
-      y: 2.5cm
-  pdf-pdflatex:
-    output-file: example-pdflatex
-    pdf-engine: lualatex
-    papersize: a4
-    margin:
-      x: 2.5cm
-      y: 2.5cm
-  revealjs:
-    output-file: example-revealjs
-    shift-heading-level-by: -1
-  beamer:
-    output-file: example-beamer
-    aspectratio: 169
-  docx:
-    output-file: example-docx
-  pptx:
-    output-file: example-pptx
-format-links:
-  - html
-  - typst
-  - format: pdf-xelatex
-    text: "PDF (XeLaTeX)"
-  - format: pdf-lualatex
-    text: "PDF (LuaLaTeX)"
-  - format: pdf-pdflatex
-    text: "PDF (PDFLaTeX)"
-  - revealjs
-  - beamer
-  - docx
-  - pptx
-embed-resources: true
+    toc: true
+    toc-expand: true
+filters:
+  - toc-depth
 ---
+
+# Installation
+
+```bash
+quarto add mcanouil/quarto-toc-depth
+```
+
+This will install the extension under the `_extensions` subdirectory.
+If you're using version control, you will want to check in this directory.
+
+# Usage
+
+Add the filter to your document's YAML header:
+
+```yaml
+filters:
+  - toc-depth
+```
+
+Then control TOC depth for specific sections using the `toc-depth` attribute on headers: `{toc-depth=N}`.
+
+:::: {.callout-note}
+The TOC depth is relative to the section where it is defined.
+:::
+
+# Section with Default TOC Behaviour
+
+This section uses Quarto's default table of contents behaviour.
+
+## Subsection 1.1
+
+This subsection will appear in the TOC.
+
+### Subsection 1.1.1
+
+This nested subsection will also appear in the TOC.
+
+# Section Hidden from TOC {toc-depth=0}
+
+```markdown
+# Section Hidden from TOC {toc-depth=0}
+```
+
+This entire section and all its subsections will be hidden from the table of contents.
+
+## Hidden Subsection 2.1
+
+This will not appear in the TOC.
+
+### Hidden Subsection 2.1.1
+
+This will also not appear in the TOC.
+
+# Section with Limited Depth {toc-depth=2}
+
+```markdown
+# Section with Limited Depth {toc-depth=2}
+```
+
+This section will appear in the TOC, along with its direct children.
+
+## Visible Subsection 3.1
+
+This subsection will appear in the TOC (depth = 2).
+
+### Hidden Subsection 3.1.1
+
+This nested subsection will NOT appear in the TOC (depth = 3).
+
+# Another Section with Single Level {toc-depth=1}
+
+```markdown
+# Another Section with Single Level {toc-depth=1}
+```
+
+This section will appear in the TOC, but its direct children will be hidden.
+
+## Hidden Subsection 4.1
+
+This subsection will NOT appear in the TOC (depth = 2).
+
+### Hidden Subsection 4.1.1
+
+This will NOT appear in the TOC (depth = 3).
+
+#### Hidden Subsection 4.1.1.1
+
+This will also not appear in the TOC (depth = 4).
+
+# Final Section
+
+This section returns to the default TOC behaviour and will display all subsections according to your document settings.
