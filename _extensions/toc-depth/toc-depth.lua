@@ -28,6 +28,10 @@
 --- in a Quarto document. Headers marked with the toc-depth attribute will only show
 --- nested headers up to the specified depth in the table of contents.
 
+--- Load utils module
+local utils_path = quarto.utils.resolve_path("utils.lua")
+local utils = require(utils_path)
+
 --- @type boolean Flag indicating if we're currently processing children of a header with toc-depth
 local is_parent = false
 
@@ -37,25 +41,12 @@ local reference_level = nil
 --- @type number The current toc-depth value being applied
 local current_toc_depth = 1
 
---- Check if a class list contains a specific class name
---- @param classes table|nil List of CSS classes
---- @param name string The class name to search for
---- @return boolean True if the class is found, false otherwise
-local function has_class(classes, name)
-  if not classes then return false end
-  for _, cls in ipairs(classes) do
-    if cls == name then return true end
-  end
-  return false
-end
 
 --- Add a class to the class list if it doesn't already exist
 --- @param classes table List of CSS classes
 --- @param name string The class name to add
 local function add_class(classes, name)
-  if not has_class(classes, name) then
-    classes:insert(name)
-  end
+  utils.add_class(classes, name)
 end
 
 --- Extract the toc-depth value from element attributes
