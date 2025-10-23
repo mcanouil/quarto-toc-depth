@@ -9,10 +9,10 @@
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -67,7 +67,7 @@ end
 --- 2. If we're processing children of a parent header, it applies the toc-depth rules
 local function process_header(elem)
   local toc_depth = get_toc_depth_from_attributes(elem.attributes)
-  
+
   if toc_depth then
     is_parent = true
     reference_level = elem.level
