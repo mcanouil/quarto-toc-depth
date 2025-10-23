@@ -29,8 +29,7 @@
 --- nested headers up to the specified depth in the table of contents.
 
 --- Load utils module
-local utils_path = quarto.utils.resolve_path("_modules/utils.lua")
-local utils = require(utils_path)
+local utils = require(quarto.utils.resolve_path("_modules/utils.lua"):gsub("%.lua$", ""))
 
 --- @type boolean Flag indicating if we're currently processing children of a header with toc-depth
 local is_parent = false
