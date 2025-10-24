@@ -29,7 +29,7 @@
 --- nested headers up to the specified depth in the table of contents.
 
 --- Load utils module
-local utils = require(quarto.utils.resolve_path("_modules/utils.lua"):gsub("%.lua$", ""))
+local utils = require(quarto.utils.resolve_path('_modules/utils.lua'):gsub('%.lua$', ''))
 
 --- @type boolean Flag indicating if we're currently processing children of a header with toc-depth
 local is_parent = false
@@ -52,8 +52,8 @@ end
 --- @param attributes table|nil Element attributes table
 --- @return number|nil The toc-depth value if found and valid, nil otherwise
 local function get_toc_depth_from_attributes(attributes)
-  if attributes and attributes["toc-depth"] then
-    return tonumber(attributes["toc-depth"])
+  if attributes and attributes['toc-depth'] then
+    return tonumber(attributes['toc-depth'])
   end
   return nil
 end
@@ -72,8 +72,8 @@ local function process_header(elem)
     reference_level = elem.level
     current_toc_depth = toc_depth
     if current_toc_depth == 0 then
-      add_class(elem.classes, "unlisted")
-      add_class(elem.classes, "unnumbered")
+      add_class(elem.classes, 'unlisted')
+      add_class(elem.classes, 'unnumbered')
     end
     return elem
   end
@@ -88,8 +88,8 @@ local function process_header(elem)
     if elem.level > reference_level then
       local relative_depth = elem.level - reference_level
       if relative_depth >= current_toc_depth then
-        add_class(elem.classes, "unlisted")
-        add_class(elem.classes, "unnumbered")
+        add_class(elem.classes, 'unlisted')
+        add_class(elem.classes, 'unnumbered')
       end
       return elem
     end
