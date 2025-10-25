@@ -1,6 +1,10 @@
 ---
 title: "TOC Depth"
 subtitle: "Quarto Extension"
+author:
+  - name: "Mickaël CANOUIL, _Ph.D._"
+    orcid: "0000-0002-3396-4549"
+    url: "https://mickael.canouil.fr"
 description: |
   This document demonstrates the TOC Depth extension functionality.
 format:
