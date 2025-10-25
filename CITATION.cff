@@ -9,5 +9,5 @@ authors:
 repository-code: "https://github.com/mcanouil/quarto-toc-depth"
 url: "http://m.canouil.dev/quarto-toc-depth/"
 license: "MIT"
-date-released: "2025-08-13"
-version: 0.1.0
+date-released: "2025-10-25"
+version: 0.2.0
