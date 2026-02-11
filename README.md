@@ -5,7 +5,7 @@ A Quarto extension that provides fine-grained control over table of contents dep
 ## Installation
 
 ```bash
-quarto add mcanouil/quarto-toc-depth
+quarto add mcanouil/quarto-toc-depth@0.2.1
 ```
 
 This will install the extension under the `_extensions` subdirectory.
