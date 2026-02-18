@@ -3,9 +3,12 @@
 
 # Element attributes accepted by the filter on Header elements.
 # Used in: ## Section Title {toc-depth=1}
+
+$schema: https://m.canouil.dev/quarto-wizard/assets/schema/v1/extension-schema.json
+
 element-attributes:
   Header:
     toc-depth:
-      type: number
+      type: integer
       min: 0
       description: "Maximum depth of sub-headings to include in the table of contents relative to this header. Set to 0 to exclude this header and all its sub-headings from the TOC."
