@@ -1,12 +1,12 @@
 # _schema.yml for "toc-depth" filter extension
-# Describes element attributes for IDE tooling and runtime validation.
+# Describes attributes for IDE tooling and runtime validation.
 
-# Element attributes accepted by the filter on Header elements.
+# Attributes accepted by the filter on Header elements.
 # Used in: ## Section Title {toc-depth=1}
 
 $schema: https://m.canouil.dev/quarto-wizard/assets/schema/v1/extension-schema.json
 
-element-attributes:
+attributes:
   Header:
     toc-depth:
       type: integer
