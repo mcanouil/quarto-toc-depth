@@ -3,8 +3,8 @@
 --- @copyright 2026 Mickaël Canouil
 --- @author Mickaël Canouil
 
---- Load utils module
-local utils = require(quarto.utils.resolve_path('_modules/utils.lua'):gsub('%.lua$', ''))
+--- Load modules
+local pdoc = require(quarto.utils.resolve_path('_modules/pandoc-helpers.lua'):gsub('%.lua$', ''))
 
 --- @type boolean Flag indicating if we're currently processing children of a header with toc-depth
 local is_parent = false
@@ -20,7 +20,7 @@ local current_toc_depth = 1
 --- @param classes table List of CSS classes
 --- @param name string The class name to add
 local function add_class(classes, name)
-  utils.add_class(classes, name)
+  pdoc.add_class(classes, name)
 end
 
 --- Extract the toc-depth value from element attributes
