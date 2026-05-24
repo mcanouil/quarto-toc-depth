@@ -1,10 +1,22 @@
 # _schema.yml for "toc-depth" filter extension
-# Describes attributes for IDE tooling and runtime validation.
+# Describes options and attributes for IDE tooling and runtime validation.
+
+# Extension-level metadata options.
+# Configured in _quarto.yml, _metadata.yml, or document front matter:
+#   extensions:
+#     toc-depth:
+#       default: 1
 
 # Attributes accepted by the filter on Header elements.
 # Used in: ## Section Title {toc-depth=1}
 
 $schema: https://m.canouil.dev/quarto-wizard/assets/schema/v1/extension-schema.json
+
+options:
+  default:
+    type: integer
+    min: 0
+    description: "Document-wide default toc-depth applied to headers without an explicit toc-depth attribute. An explicit per-header toc-depth attribute always overrides this default."
 
 attributes:
   Header:

@@ -14,6 +14,9 @@ format:
     toc-expand: true
 filters:
   - toc-depth
+extensions:
+  toc-depth:
+    default: 1
 ---
 
 # Installation
@@ -40,17 +43,28 @@ Then control TOC depth for specific sections using the `toc-depth` attribute on 
 The TOC depth is relative to the section where it is defined.
 :::
 
-# Section with Default TOC Behaviour
+You can also set a document-wide default depth so you do not have to annotate every header.
 
-This section uses Quarto's default table of contents behaviour.
+```yaml
+extensions:
+  toc-depth:
+    default: 1
+```
+
+This document sets `extensions.toc-depth.default: 1`.
+An explicit per-header `toc-depth` attribute always overrides this default.
+
+# Section with the Document Default
+
+This section uses the document-wide default of `1`, so it appears in the TOC, but its direct children are hidden.
 
 ## Subsection 1.1
 
-This subsection will appear in the TOC.
+This subsection will NOT appear in the TOC because of the document default (depth = 2).
 
 ### Subsection 1.1.1
 
-This nested subsection will also appear in the TOC.
+This nested subsection will also NOT appear in the TOC because of the document default (depth = 3).
 
 # Section Hidden from TOC {toc-depth=0}
 
@@ -104,6 +118,26 @@ This will NOT appear in the TOC (depth = 3).
 
 This will also not appear in the TOC (depth = 4).
 
+# Section Overriding the Document Default {toc-depth=2}
+
+```markdown
+# Section Overriding the Document Default {toc-depth=2}
+```
+
+This section overrides the document default of `1` with an explicit `toc-depth=2`, so its direct children appear in the TOC.
+
+## Visible Subsection 5.1
+
+This subsection will appear in the TOC because of the explicit override (depth = 2).
+
+### Hidden Subsection 5.1.1
+
+This nested subsection will NOT appear in the TOC (depth = 3).
+
 # Final Section
 
-This section returns to the default TOC behaviour and will display all subsections according to your document settings.
+This section returns to the document-wide default of `1`, so it appears in the TOC, but its direct children are hidden.
+
+## Hidden Subsection 6.1
+
+This subsection will NOT appear in the TOC because of the document default (depth = 2).

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### New Features
+
+- feat: Add `extensions.toc-depth.default` option to set a document-wide default depth applied to headers without an explicit `toc-depth` attribute.
+
 ## 0.4.0 (2026-03-23)
 
 ### Refactoring
