@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- fix: Reset module-level cascade state in the `Meta` pass so batch renders no longer leak state between documents.
+- fix: Clamp negative `toc-depth` values to `0` and emit a warning instead of silently producing inverted cascade behaviour.
+- fix: Warn on non-numeric `toc-depth` attributes and on non-numeric `extensions.toc-depth.default` values instead of accepting them silently.
+
+### Documentation
+
+- docs: Document the `toc-depth=0` dual effect (`unlisted` and `unnumbered`).
+- docs: Document the cascade-override rule with a worked example where a child re-opens the TOC for its sub-tree.
+- docs: Add a cross-format support statement covering HTML, LaTeX/PDF, DOCX, and Typst.
+- docs: Document input validation (negative and non-numeric values).
+
+### Refactoring
+
+- refactor: Add shared `logging.lua` module and route warnings through `quarto.log.warning` with the `[toc-depth]` prefix.
+
 ## 0.5.0 (2026-05-24)
 
 ### New Features

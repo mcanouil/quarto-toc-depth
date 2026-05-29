@@ -11,6 +11,7 @@ format:
   html:
     output-file: index
     toc: true
+    toc-depth: 4
     toc-expand: true
 filters:
   - toc-depth
@@ -134,10 +135,43 @@ This subsection will appear in the TOC because of the explicit override (depth =
 
 This nested subsection will NOT appear in the TOC (depth = 3).
 
+# Cascade Override: Child Widens the TOC {toc-depth=1}
+
+```markdown
+# Cascade Override: Child Widens the TOC {toc-depth=1}
+```
+
+This parent limits the TOC to depth `1`, so its direct children would normally be hidden from the TOC.
+A child can override the cascade for its own sub-tree by setting an explicit `toc-depth` attribute.
+
+## Inherited Child 6.1
+
+This subsection inherits the parent's cascade of `toc-depth=1` and is hidden from the TOC.
+
+## Overriding Child 6.2 {toc-depth=3}
+
+```markdown
+## Overriding Child 6.2 {toc-depth=3}
+```
+
+This subsection overrides the parent's cascade with `toc-depth=3`, so it and the next two levels of headings appear in the TOC.
+
+### Visible Grandchild 6.2.1
+
+This nested subsection appears in the TOC because of the override on its parent.
+
+#### Visible Great-grandchild 6.2.1.1
+
+This deeper subsection also appears in the TOC because the override caps the visible depth at `3`.
+
+##### Hidden Great-great-grandchild 6.2.1.1.1
+
+This deeper subsection is hidden because it exceeds the override's depth of `3`.
+
 # Final Section
 
 This section returns to the document-wide default of `1`, so it appears in the TOC, but its direct children are hidden.
 
-## Hidden Subsection 6.1
+## Hidden Subsection 7.1
 
 This subsection will NOT appear in the TOC because of the document default (depth = 2).
