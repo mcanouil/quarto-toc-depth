@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.0 (2026-05-31)
+
 ### Bug Fixes
 
 - fix: Reset module-level cascade state in the `Meta` pass so batch renders no longer leak state between documents.
