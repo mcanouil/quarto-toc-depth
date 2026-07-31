@@ -1,0 +1,118 @@
+---
+title: "Reference"
+subtitle: "Every rule the toc-depth extension applies."
+description: "The complete toc-depth behaviour: the heading attribute, the document default, how the cascade works, and what each format does with it."
+---
+
+## Enabling the filter
+
+```yaml
+filters:
+  - toc-depth
+```
+
+## The attribute
+
+```markdown
+## Section {toc-depth=1}
+```
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| `toc-depth` | non-negative integer | How many levels below this heading appear in the contents. `0` removes the heading itself. |
+
+: The attribute accepted on any heading. {.striped .hover tbl-colwidths="[18,22,60]"}
+
+The depth is relative to the heading that carries it.
+`toc-depth=2` on a level-two heading lists that heading and its level-three children, and stops there, whatever level the heading sits at.
+
+| Value | Effect on the heading | Effect on its subtree |
+| --- | --- | --- |
+| `0` | Removed from the contents, and unnumbered. | Removed and unnumbered, all the way down. |
+| `1` | Listed. | Not listed. |
+| `2` | Listed. | Direct children listed; anything deeper is not. |
+| `n` | Listed. | Listed down to `n` levels below it. |
+
+: What each value does. {.striped .hover tbl-colwidths="[10,40,50]"}
+
+## The document default
+
+```yaml
+extensions:
+  toc-depth:
+    default: 1
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `default` | non-negative integer | | Applied to every heading with no explicit `toc-depth`. |
+
+: Document and project options. {.striped .hover tbl-colwidths="[15,22,12,51]"}
+
+An attribute on a heading always beats the document default.
+
+## The cascade
+
+A heading's depth applies to everything beneath it, until a descendant sets its own.
+
+A descendant with an explicit `toc-depth` takes over the cascade for itself and its own subtree, and can widen it or narrow it.
+
+```markdown
+# Parent {toc-depth=1}
+
+## Child A
+
+## Child B {toc-depth=3}
+
+### Grandchild B1
+```
+
+`Child A` is hidden, inherited from `Parent`.
+`Child B` overrides with a wider depth, so `Grandchild B1` is listed even though its parent's parent asked for one level.
+
+The same works in the other direction: `toc-depth=0` on one child hides that subtree while its siblings stay visible under a wider parent.
+
+## Quarto's own `toc-depth`
+
+Quarto has a document option of the same name, and it is applied first.
+
+```yaml
+toc-depth: 3
+```
+
+That option decides how deep the contents can go at all; this extension then removes entries within it.
+The two compose in one direction only: a heading attribute can narrow what Quarto would have listed, and cannot widen it beyond Quarto's own limit.
+
+::: {.callout-caution}
+`toc-depth=3` on a level two heading asks for its level five descendants, and Quarto's default of `3` has already excluded everything below level three.
+Raise the document option when a heading attribute asks for more than it allows.
+:::
+
+## Validation
+
+| Rule | On failure |
+| --- | --- |
+| The value is an integer. | Warns, and the heading falls back to the document default, or to normal Quarto behaviour. |
+| The value is not negative. | Warns, and the value is clamped to `0`. |
+
+: Validation rules. {.striped .hover tbl-colwidths="[40,60]"}
+
+## Format support
+
+The filter sets Pandoc's `unlisted` and `unnumbered` classes on headings, which is the mechanism Quarto uses itself.
+
+| Format | Contents | Numbering |
+| --- | --- | --- |
+| HTML, RevealJS | Yes | Yes |
+| LaTeX, PDF | Yes | Yes |
+| Typst | Yes | Yes |
+| Word | Depends on the template | Yes |
+| Markdown, PowerPoint | No contents to affect | |
+
+: What each format does with the classes. {.striped .hover tbl-colwidths="[28,36,36]"}
+
+## Limitations
+
+- The extension controls what the contents list, not how it is laid out.
+- `toc-depth=0` also unnumbers the heading. The two go together in Pandoc's model and cannot be separated here.
+- Word honours the numbering; whether the contents follow depends on the template in use.
