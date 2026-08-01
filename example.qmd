@@ -1,177 +1,45 @@
 ---
-title: "TOC Depth"
+title: "TOC Depth Extension For Quarto"
 subtitle: "Quarto Extension"
 author:
   - name: "Mickaël CANOUIL, _Ph.D._"
     orcid: "0000-0002-3396-4549"
     url: "https://mickael.canouil.fr"
-description: |
-  This document demonstrates the TOC Depth extension functionality.
 format:
   html:
-    output-file: index
     toc: true
-    toc-depth: 4
-    toc-expand: true
+    toc-depth: 5
 filters:
   - toc-depth
-extensions:
-  toc-depth:
-    default: 1
 ---
 
-# Installation
+Compare the contents beside this document with the headings in it.
 
-```bash
-quarto add mcanouil/quarto-toc-depth@0.6.0
-```
+## Listed without its subsections {toc-depth=1}
 
-This will install the extension under the `_extensions` subdirectory.
-If you're using version control, you will want to check in this directory.
+The heading is in the contents; the one below it is not.
 
-# Usage
+### Hidden by the parent
 
-Add the filter to your document's YAML header:
+Inherited from the cascade.
 
-```yaml
-filters:
-  - toc-depth
-```
+## Overriding the cascade {toc-depth=1}
 
-Then control TOC depth for specific sections using the `toc-depth` attribute on headers: `{toc-depth=N}`.
+### Widened again {toc-depth=2}
 
-:::: {.callout-note}
-The TOC depth is relative to the section where it is defined.
-:::
+A heading with its own attribute takes over the cascade for its subtree.
 
-You can also set a document-wide default depth so you do not have to annotate every header.
+#### Listed because of the override
 
-```yaml
-extensions:
-  toc-depth:
-    default: 1
-```
+## Out of the contents entirely {toc-depth=0}
 
-This document sets `extensions.toc-depth.default: 1`.
-An explicit per-header `toc-depth` attribute always overrides this default.
+Absent from the contents, and unnumbered. Its subsections go with it.
 
-# Section with the Document Default
+## Notes
 
-This section uses the document-wide default of `1`, so it appears in the TOC, but its direct children are hidden.
+The depth is counted from the heading that carries it.
+Quarto's own `toc-depth` is applied first, so a heading attribute can narrow what would have been listed but cannot widen it beyond that limit; this document raises it to `5`.
 
-## Subsection 1.1
+Set `extensions.toc-depth.default` to annotate only the exceptions.
 
-This subsection will NOT appear in the TOC because of the document default (depth = 2).
-
-### Subsection 1.1.1
-
-This nested subsection will also NOT appear in the TOC because of the document default (depth = 3).
-
-# Section Hidden from TOC {toc-depth=0}
-
-```markdown
-# Section Hidden from TOC {toc-depth=0}
-```
-
-This entire section and all its subsections will be hidden from the table of contents.
-
-## Hidden Subsection 2.1
-
-This will not appear in the TOC.
-
-### Hidden Subsection 2.1.1
-
-This will also not appear in the TOC.
-
-# Section with Limited Depth {toc-depth=2}
-
-```markdown
-# Section with Limited Depth {toc-depth=2}
-```
-
-This section will appear in the TOC, along with its direct children.
-
-## Visible Subsection 3.1
-
-This subsection will appear in the TOC (depth = 2).
-
-### Hidden Subsection 3.1.1
-
-This nested subsection will NOT appear in the TOC (depth = 3).
-
-# Another Section with Single Level {toc-depth=1}
-
-```markdown
-# Another Section with Single Level {toc-depth=1}
-```
-
-This section will appear in the TOC, but its direct children will be hidden.
-
-## Hidden Subsection 4.1
-
-This subsection will NOT appear in the TOC (depth = 2).
-
-### Hidden Subsection 4.1.1
-
-This will NOT appear in the TOC (depth = 3).
-
-#### Hidden Subsection 4.1.1.1
-
-This will also not appear in the TOC (depth = 4).
-
-# Section Overriding the Document Default {toc-depth=2}
-
-```markdown
-# Section Overriding the Document Default {toc-depth=2}
-```
-
-This section overrides the document default of `1` with an explicit `toc-depth=2`, so its direct children appear in the TOC.
-
-## Visible Subsection 5.1
-
-This subsection will appear in the TOC because of the explicit override (depth = 2).
-
-### Hidden Subsection 5.1.1
-
-This nested subsection will NOT appear in the TOC (depth = 3).
-
-# Cascade Override: Child Widens the TOC {toc-depth=1}
-
-```markdown
-# Cascade Override: Child Widens the TOC {toc-depth=1}
-```
-
-This parent limits the TOC to depth `1`, so its direct children would normally be hidden from the TOC.
-A child can override the cascade for its own sub-tree by setting an explicit `toc-depth` attribute.
-
-## Inherited Child 6.1
-
-This subsection inherits the parent's cascade of `toc-depth=1` and is hidden from the TOC.
-
-## Overriding Child 6.2 {toc-depth=3}
-
-```markdown
-## Overriding Child 6.2 {toc-depth=3}
-```
-
-This subsection overrides the parent's cascade with `toc-depth=3`, so it and the next two levels of headings appear in the TOC.
-
-### Visible Grandchild 6.2.1
-
-This nested subsection appears in the TOC because of the override on its parent.
-
-#### Visible Great-grandchild 6.2.1.1
-
-This deeper subsection also appears in the TOC because the override caps the visible depth at `3`.
-
-##### Hidden Great-great-grandchild 6.2.1.1.1
-
-This deeper subsection is hidden because it exceeds the override's depth of `3`.
-
-# Final Section
-
-This section returns to the document-wide default of `1`, so it appears in the TOC, but its direct children are hidden.
-
-## Hidden Subsection 7.1
-
-This subsection will NOT appear in the TOC because of the document default (depth = 2).
+Full documentation: <https://m.canouil.dev/quarto-toc-depth/>.

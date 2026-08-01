@@ -1,0 +1,79 @@
+---
+title: "TOC Depth"
+subtitle: "Per-heading control over how deep the table of contents goes."
+description: "What the toc-depth extension is for, how to enable it, and the smallest attribute that trims a section out of the contents."
+authors:
+  - name: "Mickaël CANOUIL, _Ph.D._"
+    orcid: "0000-0002-3396-4549"
+    url: "https://mickael.canouil.fr"
+---
+
+Quarto's `toc-depth` is a single number for the whole document.
+Set it to two and every fourth-level heading disappears, including the ones worth listing; set it to four and the contents fill with detail nobody needs.
+
+`toc-depth` makes it per heading.
+An appendix can be listed without its subsections, a reference section can be listed in full, and a changelog can be left out of the contents entirely, all in one document.
+
+## Installation
+
+```bash
+quarto add {{< var extension.reference >}}
+```
+
+This will install the extension under the `_extensions` subdirectory.
+If you are using version control, you will want to check in this directory.
+
+Or install it from your editor with [Quarto Wizard](https://m.canouil.dev/quarto-wizard):
+
+::: {.btn-group role="group" aria-label="Quarto Wizard installer options"}
+
+[Visual Studio Code](vscode://mcanouil.quarto-wizard/install?repo={{< var extension.wizard-reference >}}){.btn .btn-outline-primary title="Install {{< var extension.reference >}} in Visual Studio Code using the Quarto Wizard extension."}
+[Positron](positron://mcanouil.quarto-wizard/install?repo={{< var extension.wizard-reference >}}){.btn .btn-outline-primary title="Install {{< var extension.reference >}} in Positron using the Quarto Wizard extension."}
+[VSCodium](vscodium://mcanouil.quarto-wizard/install?repo={{< var extension.wizard-reference >}}){.btn .btn-outline-primary title="Install {{< var extension.reference >}} in VSCodium using the Quarto Wizard extension."}
+
+:::
+
+## Quick start
+
+Enable the filter:
+
+```yaml
+filters:
+  - toc-depth
+```
+
+Then annotate the headings that need it:
+
+```markdown
+## Appendix {toc-depth=1}
+
+## Notes {toc-depth=0}
+```
+
+`toc-depth=1` lists the heading but none of its subsections.
+`toc-depth=0` leaves the heading out of the contents altogether, and unnumbers it.
+
+The depth is counted from the heading that carries it, not from the top of the document.
+
+Set a document-wide default and annotate only the exceptions:
+
+```yaml
+extensions:
+  toc-depth:
+    default: 1
+```
+
+See the [Reference](reference.qmd) for the rules, and the [Examples](examples.qmd) for a contents list you can compare against the page.
+
+## Where it works
+
+The filter applies Pandoc's `unlisted` and `unnumbered` classes, which is the mechanism Quarto itself uses, so it works wherever those are honoured: HTML and RevealJS, LaTeX and PDF, Typst, and Word for numbering.
+
+A format with no generated contents, plain markdown or PowerPoint, is unaffected.
+
+## Links
+
+- [Reference](reference.qmd) for the cascade and validation rules.
+- [Examples](examples.qmd) for headings and the contents they produce.
+- [Changelog](changelog.qmd) for what each release changed.
+- [Source and issues](https://github.com/mcanouil/quarto-toc-depth) on GitHub.

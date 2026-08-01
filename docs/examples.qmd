@@ -1,0 +1,97 @@
+---
+title: "Examples"
+subtitle: "Headings, and the contents they produce."
+description: "Each toc-depth value applied to a real heading, so the page's own table of contents shows the result."
+# Quarto's own toc-depth caps the contents before this filter is consulted,
+# and its default of 3 would hide the level four heading the override
+# section demonstrates.
+toc-depth: 5
+---
+
+The contents list beside this page is produced by the extension.
+Compare it against the headings below: several of them are deliberately missing from it.
+
+Every heading in this section carries the attribute shown above it.
+
+## Listed in full
+
+No attribute, so the heading and its subsections behave as Quarto would have them.
+
+### A subsection, listed
+
+Written as `### A subsection, listed`, and present in the contents.
+
+## Listed without its subsections {toc-depth=1}
+
+Written as `## Listed without its subsections {toc-depth=1}`.
+
+The heading is in the contents; the subsection below it is not.
+
+### Hidden by the parent
+
+Written as `### Hidden by the parent`, with no attribute of its own.
+It inherits the cascade and stays out of the contents.
+
+## Listed with one level {toc-depth=2}
+
+Written as `## Listed with one level {toc-depth=2}`.
+
+### A child, listed
+
+Present in the contents, because the parent allowed two levels.
+
+#### A grandchild, not listed
+
+Deeper than the parent allowed, so it is absent.
+
+## Overriding the cascade {toc-depth=1}
+
+Written as `## Overriding the cascade {toc-depth=1}`, so its children are hidden by default.
+
+### Hidden, as expected
+
+No attribute, so the cascade applies.
+
+### Widened again {toc-depth=2}
+
+Written as `### Widened again {toc-depth=2}`.
+
+This heading carries its own attribute, which takes over the cascade for its subtree.
+
+#### Listed because of the override
+
+Present in the contents, even though its grandparent asked for one level.
+
+## Out of the contents entirely {toc-depth=0}
+
+Written as `## Out of the contents entirely {toc-depth=0}`.
+
+This heading is absent from the contents and carries no section number.
+Its subsections go with it.
+
+### Also absent
+
+Inherited from the heading above.
+
+## A document-wide default
+
+Rather than annotating every heading, set the default and annotate the exceptions:
+
+```yaml
+extensions:
+  toc-depth:
+    default: 1
+```
+
+Every heading that no other heading's depth already covers then lists itself and hides its children, and an explicit `toc-depth` still wins.
+
+This page sets no default, so each heading above shows exactly what its own attribute does.
+
+::: {.callout-note}
+This page also sets Quarto's own `toc-depth: 5`.
+That option caps the contents before this filter is consulted, and its default of `3` would have hidden the level four heading in the override section however wide the attribute above it was.
+:::
+
+## Source
+
+The repository ships a short, standalone starting point you can copy: [`example.qmd`](https://github.com/mcanouil/quarto-toc-depth/blob/main/example.qmd).
