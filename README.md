@@ -7,7 +7,7 @@ Quarto's own `toc-depth` is one number for the whole document; this makes it per
 ## Installation
 
 ```bash
-quarto add mcanouil/quarto-toc-depth@0.6.0
+quarto add mcanouil/quarto-toc-depth@0.6.1
 ```
 
 This will install the extension under the `_extensions` subdirectory.
