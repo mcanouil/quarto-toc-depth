@@ -83,7 +83,7 @@ extensions:
     default: 1
 ```
 
-Every heading without an attribute then lists itself and hides its children, and an explicit `toc-depth` on a heading still wins.
+Every heading that no other heading's depth already covers then lists itself and hides its children, and an explicit `toc-depth` still wins.
 
 This page sets no default, so each heading above shows exactly what its own attribute does.
 
