@@ -4,8 +4,8 @@
 --- @author Mickaël Canouil
 
 --- Load modules
-local pdoc = require(quarto.utils.resolve_path('_modules/pandoc-helpers.lua'):gsub('%.lua$', ''))
-local logging = require(quarto.utils.resolve_path('_modules/logging.lua'):gsub('%.lua$', ''))
+local pdoc = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/pandoc-helpers.lua'):gsub('%.lua$', ''))
+local logging = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/logging.lua'):gsub('%.lua$', ''))
 
 --- Extension name used as a prefix in log messages
 local EXTENSION_NAME = 'toc-depth'
