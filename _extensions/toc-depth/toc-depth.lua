@@ -3,12 +3,28 @@
 --- @copyright 2026 Mickaël Canouil
 --- @author Mickaël Canouil
 
---- Load modules
-local pdoc = require(quarto.utils.resolve_path('_modules/pandoc-helpers.lua'):gsub('%.lua$', ''))
-local logging = require(quarto.utils.resolve_path('_modules/logging.lua'):gsub('%.lua$', ''))
-
 --- Extension name used as a prefix in log messages
 local EXTENSION_NAME = 'toc-depth'
+
+--- Load modules
+local pdoc = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/pandoc-helpers.lua'):gsub('%.lua$', ''))
+local logging = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/logging.lua'):gsub('%.lua$', ''))
+local schema = require(quarto.utils.resolve_path('_vendor/quarto-wizard/schema.lua'):gsub('%.lua$', ''))
+local check = require(quarto.utils.resolve_path('_vendor/quarto-lua-modules/schema-check.lua'):gsub('%.lua$', ''))
+
+--- The schema check, built once for the whole render. It reads `_schema.yml` on
+--- the way in and checks the document configuration against it once.
+---
+--- The validator is injected rather than required by the check module, so the
+--- two vendored sources stay independent of where the other was placed.
+---
+--- The extension contributes a filter and no shortcodes, so the check runs from
+--- the `Meta` handler, after the per-document state reset and before the first
+--- option is read. There is no call to check.
+---
+--- A schema that cannot be read is reported by the module as an error and the
+--- render carries on: a configuration file must not stop a document.
+local checker = check.new(schema, EXTENSION_NAME)
 
 --- @type boolean Flag indicating if we're currently processing children of a header with toc-depth
 local is_parent = false
@@ -87,12 +103,14 @@ end
 --- @param meta table Document metadata table
 --- @return table The unchanged document metadata table
 --- @description Resets module-level cascade state so a fresh render does not inherit
---- state from a previous document in the same Quarto process, then reads the integer
---- option extensions.toc-depth.default and stores it as the fallback toc-depth for
+--- state from a previous document in the same Quarto process, checks the document
+--- configuration against the extension schema, then reads the integer option
+--- extensions.toc-depth.default and stores it as the fallback toc-depth for
 --- headers without an explicit toc-depth attribute. Negative values are clamped to 0
 --- with a warning.
 local function get_toc_depth_meta(meta)
   reset_state()
+  checker:options(meta)
   if meta['extensions'] and meta['extensions']['toc-depth'] and meta['extensions']['toc-depth']['default'] then
     local raw = tonumber(pandoc.utils.stringify(meta['extensions']['toc-depth']['default']))
     if raw == nil then
