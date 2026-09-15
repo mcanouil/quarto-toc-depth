@@ -56,47 +56,35 @@ local function add_class(classes, name)
   pdoc.add_class(classes, name)
 end
 
---- Validate a toc-depth value, clamping negatives to 0 with a warning.
---- @param value number|nil The toc-depth value to validate
---- @param source string Description of where the value came from (for the warning)
---- @return number|nil The validated value, or nil if value was nil
-local function validate_toc_depth(value, source)
+--- Clamp a resolved toc-depth into the range the schema declares.
+--- The checker reports a value below the minimum by name, so this applies the
+--- clamp and says nothing. Two messages for one mistake helps nobody.
+--- @param value number|nil A resolved toc-depth
+--- @return number|nil The value, clamped to 0 when negative
+local function clamp_toc_depth(value)
   if value == nil then
     return nil
   end
   if value < 0 then
-    logging.log_warning(
-      EXTENSION_NAME,
-      string.format(
-        "Negative toc-depth value %d from %s; clamping to 0 (header and sub-headings hidden from TOC).",
-        value,
-        source
-      )
-    )
     return 0
   end
   return value
 end
 
---- Extract the toc-depth value from element attributes
---- @param attributes table|nil Element attributes table
---- @return number|nil The toc-depth value if found and valid, nil otherwise
+--- Extract the toc-depth value from an element's resolved attributes.
+--- The schema declares an integer, and the validator hands back a number when
+--- the document wrote one. A value it rejects arrives as the text the document
+--- wrote, and the checker has already named it, so it is ignored here rather
+--- than applied. `toc-depth="1.5"` used to be applied as 1.5 while the same
+--- document was told the value was invalid.
+--- @param attributes table|nil Resolved element attributes
+--- @return number|nil The toc-depth value when the schema accepted one
 local function get_toc_depth_from_attributes(attributes)
-  if attributes and attributes['toc-depth'] then
-    local raw = tonumber(attributes['toc-depth'])
-    if raw == nil then
-      logging.log_warning(
-        EXTENSION_NAME,
-        string.format(
-          "Non-numeric toc-depth attribute %q; ignoring.",
-          tostring(attributes['toc-depth'])
-        )
-      )
-      return nil
-    end
-    return validate_toc_depth(raw, 'header attribute')
+  local value = attributes and attributes['toc-depth']
+  if type(value) ~= 'number' then
+    return nil
   end
-  return nil
+  return clamp_toc_depth(value)
 end
 
 --- Read the document-wide default toc-depth from metadata and reset per-document state
@@ -111,16 +99,11 @@ end
 local function get_toc_depth_meta(meta)
   reset_state()
   checker:options(meta)
-  if meta['extensions'] and meta['extensions']['toc-depth'] and meta['extensions']['toc-depth']['default'] then
-    local raw = tonumber(pandoc.utils.stringify(meta['extensions']['toc-depth']['default']))
-    if raw == nil then
-      logging.log_warning(
-        EXTENSION_NAME,
-        'Non-numeric extensions.toc-depth.default; ignoring.'
-      )
-    else
-      default_toc_depth = validate_toc_depth(raw, 'extensions.toc-depth.default')
-    end
+  -- The schema decides the option, and reports a value it does not accept, so
+  -- a non-integer is ignored here rather than warned about a second time.
+  local resolved = checker:option('default')
+  if type(resolved) == 'number' then
+    default_toc_depth = clamp_toc_depth(resolved)
   end
   return meta
 end
@@ -134,7 +117,7 @@ end
 --- An explicit toc-depth attribute always overrides the document-wide default.
 --- When toc-depth is 0, the header is hidden from the TOC and unnumbered.
 local function process_header(elem)
-  local toc_depth = get_toc_depth_from_attributes(elem.attributes)
+  local toc_depth = get_toc_depth_from_attributes(checker:attributes(elem.attributes, 'Header'))
 
   if is_parent and not toc_depth and elem.level <= reference_level then
     is_parent = false
