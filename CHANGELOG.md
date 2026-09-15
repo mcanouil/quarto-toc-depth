@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- fix: Read `toc-depth` and the `default` option as the integers the schema declares. A fraction such as `1.5` was applied while the same document was told the value was invalid, and it is now reported and ignored. (#35)
+
 ### Documentation
 
 - docs: Serve the extension's social card as the Open Graph image, so a shared link shows the card rather than the first image on the page. (#32)
