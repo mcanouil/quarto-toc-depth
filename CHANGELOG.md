@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- fix: Read `toc-depth` and the `default` option as the integers the schema declares. A fraction such as `1.5` was applied while the same document was told the value was invalid, and it is now reported and ignored. (#35)
+
 ### Documentation
 
 - docs: Serve the extension's social card as the Open Graph image, so a shared link shows the card rather than the first image on the page. (#32)
@@ -10,6 +14,7 @@
 
 - build: Update the vendored Lua modules to 2.3.0, which includes the `schema-check` fix for an extension whose entry points are in a subdirectory. A module no longer carries a version line in its header, so its checksum changes only when its code changes. (#33)
 - build: Fetch the schema validator from a Quarto Wizard release asset rather than a raw path inside its repository, which a refactor could move without notice. The vendored file is unchanged. (#34)
+- build: Update the vendored Lua modules to 2.5.0, which adds the accessors that read what the schema resolves an option, an element's attributes and a format's options to. The schema validator moves to its own release train and is pinned at `schema-v2.1.0`, which accepts only `true` and `false` as a boolean. (#35)
 
 ## 0.7.0 (2026-09-07)
 
