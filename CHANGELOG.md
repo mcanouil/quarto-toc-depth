@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.1 (2026-09-23)
+
 ### Bug Fixes
 
 - fix: Read `toc-depth` and the `default` option as the integers the schema declares. A fraction such as `1.5` was applied while the same document was told the value was invalid, and it is now reported and ignored. (#35)
